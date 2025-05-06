@@ -10,7 +10,7 @@ type PostgresDB struct {
 }
 
 func InitDB(user, password, host, port, dbname, sslmode string) PostgresDB {
-	conn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, password, host, port, dbname, sslmode)
+	conn := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=%s", user, password, host, port, dbname, sslmode)
 	db, err := sql.Open("postgres", conn)
 	if err != nil {
 		panic("database does not work")
