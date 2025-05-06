@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE user (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     birthday DATE NOT NULL,
@@ -10,4 +10,4 @@ CREATE TABLE user (
 -- +goose StatementEnd
 
 -- +goose Down
-DROP TABLE user
+DROP TABLE users;
