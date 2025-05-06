@@ -27,6 +27,7 @@ type UserSaver interface {
 
 type UserProvider interface {
 	User(ctx context.Context, email string) (models.User, error)
+	UserID(ctx context.Context, username string) (int64, error)
 }
 
 func NewAuth(log *slog.Logger, userSaver UserSaver, userProvider UserProvider) *Auth {
@@ -60,6 +61,21 @@ func (a *Auth) SignIn(ctx context.Context, email string, password string) (token
 		return "", fmt.Errorf("%s: %w", op, err)
 	}
 	return tkn, nil
+}
+
+func (a *Auth) GetUser(ctx context.Context, username string) (userID int64, err error) {
+	const op = "auth.GetUser"
+
+	log := a.log.With(slog.String("op", op))
+	log.Info("getting user")
+
+	id, err := a.userProvider.UserID(ctx, username)
+	if err != nil {
+		a.log.Error("internal error", "error", err)
+		return 0, fmt.Errorf("%s: %w", op, ErrInvalidCreadentials)
+	}
+
+	return id, nil
 }
 
 func (a *Auth) RegisterNewUser(ctx context.Context, username string, email string, password string) (userID int64, err error) {

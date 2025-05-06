@@ -13,6 +13,7 @@ import (
 
 type Auth interface {
 	SignIn(ctx context.Context, email string, password string) (token string, err error)
+	GetUser(ctx context.Context, username string) (userID int64, err error)
 	RegisterNewUser(ctx context.Context, username string, email string, password string) (userID int64, err error)
 }
 
@@ -41,6 +42,21 @@ func (s *serverAPI) SignIn(ctx context.Context, req *authv1.SignInRequest) (*aut
 
 	return &authv1.SignInResponse{
 		Token: token,
+	}, nil
+}
+
+func (s *serverAPI) GetUserId(ctx context.Context, req *authv1.GetUserIdRequest) (*authv1.GetUserIdResponse, error) {
+	if req.GetUsername() == "" {
+		return nil, status.Error(codes.InvalidArgument, "username is required")
+	}
+
+	id, err := s.auth.GetUser(ctx, req.GetUsername())
+	if err != nil {
+		return nil, status.Error(codes.Internal, "internal error")
+	}
+
+	return &authv1.GetUserIdResponse{
+		UserId: id,
 	}, nil
 }
 
