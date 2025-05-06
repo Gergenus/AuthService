@@ -17,7 +17,7 @@ func main() {
 	config.InitConfig()
 	log := setupLogger()
 	log.Info("Starting application", slog.String("port", os.Getenv("GRPC_PORT")))
-	database := database.InitDB(os.Getenv("POSTRGES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_HOST"), os.Getenv("POSTGRES_PORT"), os.Getenv("POSTGRES_DBNAME"), os.Getenv("POSTGRES_SSLMODE"))
+	database := database.InitDB(os.Getenv("POSTRGES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_HOST"), os.Getenv("POSTGRES_PORT"), os.Getenv("POSTGRES_DBNAME"))
 	repository := repository.NewPostgresRepository(log, database)
 	service := auth.NewAuth(log, repository, repository)
 	application := app.NewApp(log, os.Getenv("GRPC_PORT"), service)

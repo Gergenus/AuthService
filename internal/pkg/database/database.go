@@ -9,8 +9,8 @@ type PostgresDB struct {
 	DB *sql.DB
 }
 
-func InitDB(user, password, host, port, dbname, sslmode string) PostgresDB {
-	conn := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=%s", user, password, host, port, dbname, sslmode)
+func InitDB(user, password, host, port, dbname string) PostgresDB {
+	conn := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, dbname)
 	db, err := sql.Open("postgres", conn)
 	if err != nil {
 		panic("database does not work")
