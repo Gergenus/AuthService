@@ -7,7 +7,7 @@ import (
 )
 
 func InitConfig() error {
-	err := godotenv.Load("./config/.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Println("Env err", err)
 		return err
