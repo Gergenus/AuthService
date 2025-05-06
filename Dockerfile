@@ -12,6 +12,4 @@ WORKDIR /
 
 COPY --from=auth-builder /app/cmd/auth/auth-service ./
 
-COPY --from=auth-builder /app/internal/config/.env ./
-
 ENTRYPOINT ["./auth-service"]
